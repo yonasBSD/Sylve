@@ -216,10 +216,6 @@ func main() {
 		logger.L.Fatal().Err(err).Msg("Failed to initialize RAFT")
 	}
 
-	if err := clusterSvc.StartEmbeddedSSHServer(qCtx); err != nil {
-		logger.L.Error().Err(err).Msg("Failed to start embedded cluster SSH server")
-	}
-
 	if err := zelta.EnsureZeltaInstalled(); err != nil {
 		logger.L.Error().Err(err).Msg("Failed to install Zelta")
 	}
@@ -305,18 +301,12 @@ func main() {
 		Handler: r,
 	}
 
-	clusterHTTPSServer := &http.Server{
-		Addr:      fmt.Sprintf(":%d", cluster.ClusterEmbeddedHTTPSPort),
-		Handler:   r,
-		TLSConfig: tlsConfig,
-	}
-
 	var wg sync.WaitGroup
 	type namedServer struct {
 		name string
 		srv  *http.Server
 	}
-	startedServers := make([]namedServer, 0, 3)
+	startedServers := make([]namedServer, 0, 2)
 	logger.L.Info().
 		Int("https", cfg.Port).
 		Int("http", cfg.HTTPPort).
@@ -349,15 +339,47 @@ func main() {
 		}()
 	}
 
-	startedServers = append(startedServers, namedServer{name: "Intra-cluster HTTPS", srv: clusterHTTPSServer})
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		logger.L.Info().Msgf("Intra-cluster HTTPS server started on %s:%d", cfg.IP, cluster.ClusterEmbeddedHTTPSPort)
-		if err := clusterHTTPSServer.ListenAndServeTLS("", ""); err != nil && err != http.ErrServerClosed {
-			logger.L.Fatal().Err(err).Msg("Failed to start intra-cluster HTTPS server")
+	// clusterHTTPS holds the intra-cluster HTTPS server when started; guarded by clusterHTTPSMu.
+	var clusterHTTPSMu sync.Mutex
+	var activeClusterHTTPS *http.Server
+
+	startClusterListeners := func(clusterIP string) error {
+		if err := clusterSvc.StartEmbeddedSSHServer(qCtx, clusterIP); err != nil {
+			return fmt.Errorf("cluster_ssh_start_failed: %w", err)
 		}
-	}()
+
+		clusterHTTPSMu.Lock()
+		defer clusterHTTPSMu.Unlock()
+		if activeClusterHTTPS != nil {
+			return nil // already running
+		}
+
+		srv := &http.Server{
+			Addr:      fmt.Sprintf("%s:%d", clusterIP, cluster.ClusterEmbeddedHTTPSPort),
+			Handler:   r,
+			TLSConfig: tlsConfig,
+		}
+		activeClusterHTTPS = srv
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			logger.L.Info().Msgf("Intra-cluster HTTPS server started on %s:%d", clusterIP, cluster.ClusterEmbeddedHTTPSPort)
+			if err := srv.ListenAndServeTLS("", ""); err != nil && err != http.ErrServerClosed {
+				logger.L.Fatal().Err(err).Msg("Failed to start intra-cluster HTTPS server")
+			}
+		}()
+		return nil
+	}
+
+	clusterSvc.SetClusterStartHook(startClusterListeners)
+
+	// If this node is already part of a cluster, start the cluster listeners immediately.
+	var clusterRecord clusterModels.Cluster
+	if err := d.First(&clusterRecord).Error; err == nil && clusterRecord.Enabled && clusterRecord.RaftIP != "" {
+		if err := startClusterListeners(clusterRecord.RaftIP); err != nil {
+			logger.L.Error().Err(err).Msg("failed_to_start_cluster_listeners_at_startup")
+		}
+	}
 
 	<-sigChan
 
@@ -371,6 +393,14 @@ func main() {
 			logger.L.Error().Err(err).Msgf("%s server forced to shutdown", ns.name)
 		}
 	}
+
+	clusterHTTPSMu.Lock()
+	if activeClusterHTTPS != nil {
+		if err := activeClusterHTTPS.Shutdown(ctx); err != nil {
+			logger.L.Error().Err(err).Msg("Intra-cluster HTTPS server forced to shutdown")
+		}
+	}
+	clusterHTTPSMu.Unlock()
 
 	wg.Wait()
 	logger.L.Info().Msg("Servers exited properly")

@@ -14,12 +14,12 @@ import (
 	"strings"
 
 	"github.com/alchemillahq/sylve/internal"
-	"github.com/alchemillahq/sylve/internal/services/cluster"
 	"github.com/alchemillahq/sylve/pkg/utils"
 )
 
 type portRequirement struct {
 	role string
+	ip   string
 	port int
 }
 
@@ -32,7 +32,7 @@ func preflightRequiredPorts(cfg *internal.SylveConfig, binder portBinder) error 
 	}
 
 	for _, req := range reqs {
-		if err := binder("", req.port, "tcp"); err != nil {
+		if err := binder(req.ip, req.port, "tcp"); err != nil {
 			return fmt.Errorf("required_port_not_bindable role=%s port=%d: %w", req.role, req.port, err)
 		}
 	}
@@ -45,27 +45,21 @@ func buildPortRequirements(cfg *internal.SylveConfig) ([]portRequirement, error)
 		return nil, fmt.Errorf("config_required")
 	}
 
-	reqs := make([]portRequirement, 0, 5)
+	reqs := make([]portRequirement, 0, 2)
 
 	if cfg.HTTPPort != 0 {
 		if !utils.IsValidPort(cfg.HTTPPort) {
 			return nil, fmt.Errorf("invalid_http_port: %d", cfg.HTTPPort)
 		}
-		reqs = append(reqs, portRequirement{role: "http", port: cfg.HTTPPort})
+		reqs = append(reqs, portRequirement{role: "http", ip: cfg.IP, port: cfg.HTTPPort})
 	}
 
 	if cfg.Port != 0 {
 		if !utils.IsValidPort(cfg.Port) {
 			return nil, fmt.Errorf("invalid_https_port: %d", cfg.Port)
 		}
-		reqs = append(reqs, portRequirement{role: "https", port: cfg.Port})
+		reqs = append(reqs, portRequirement{role: "https", ip: cfg.IP, port: cfg.Port})
 	}
-
-	reqs = append(reqs,
-		portRequirement{role: "cluster_ssh", port: cluster.ClusterEmbeddedSSHPort},
-		portRequirement{role: "raft", port: cluster.ClusterRaftPort},
-		portRequirement{role: "cluster_https", port: cluster.ClusterEmbeddedHTTPSPort},
-	)
 
 	for _, req := range reqs {
 		if !utils.IsValidPort(req.port) {

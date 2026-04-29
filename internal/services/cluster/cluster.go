@@ -43,6 +43,20 @@ type Service struct {
 
 	embeddedSSHOnce sync.Once
 	monitorOnce     sync.Once
+
+	clusterStartHook func(ip string) error
+}
+
+func (s *Service) SetClusterStartHook(fn func(ip string) error) {
+	s.clusterStartHook = fn
+}
+
+func (s *Service) triggerClusterStart(ip string) {
+	if s.clusterStartHook != nil {
+		if err := s.clusterStartHook(ip); err != nil {
+			logger.L.Error().Err(err).Str("ip", ip).Msg("cluster_listener_start_failed")
+		}
+	}
 }
 
 func NewClusterService(db *gorm.DB, authService serviceInterfaces.AuthServiceInterface, jailService jailServiceInterfaces.JailServiceInterface) clusterServiceInterfaces.ClusterServiceInterface {
@@ -390,6 +404,8 @@ func (s *Service) CreateCluster(ip string, fsm raft.FSM) error {
 		return err
 	}
 
+	s.triggerClusterStart(ip)
+
 	c.Enabled = true
 	c.Key = newKey
 	c.RaftBootstrap = &bootstrap
@@ -485,6 +501,8 @@ func (s *Service) StartAsJoiner(fsm raft.FSM, ip string, clusterKey string) erro
 	if err := s.EnsureAndPublishLocalSSHIdentity(); err != nil {
 		logger.L.Warn().Err(err).Msg("Cluster SSH identity publish deferred during joiner startup")
 	}
+
+	s.triggerClusterStart(ip)
 
 	return nil
 }

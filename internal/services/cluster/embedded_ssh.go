@@ -23,7 +23,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func (s *Service) StartEmbeddedSSHServer(ctx context.Context) error {
+func (s *Service) StartEmbeddedSSHServer(ctx context.Context, ip string) error {
 	var startErr error
 	s.embeddedSSHOnce.Do(func() {
 		privatePath, err := s.ClusterSSHPrivateKeyPath()
@@ -49,7 +49,7 @@ func (s *Service) StartEmbeddedSSHServer(ctx context.Context) error {
 		}
 		serverConfig.AddHostKey(hostSigner)
 
-		listenAddr := fmt.Sprintf("[::]:%d", ClusterEmbeddedSSHPort)
+		listenAddr := fmt.Sprintf("%s:%d", ip, ClusterEmbeddedSSHPort)
 		listener, err := net.Listen("tcp", listenAddr)
 		if err != nil {
 			startErr = fmt.Errorf("embedded_ssh_listen_failed: %w", err)
