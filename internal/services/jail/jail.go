@@ -1093,12 +1093,17 @@ func (s *Service) CreateJailConfig(data jailModels.Jail, mountPoint string, mac 
 		if err != nil {
 			return "", fmt.Errorf("failed_to_open_devfs_rules_file: %w", err)
 		}
-		defer f.Close()
 
 		rule := fmt.Sprintf("\n[devfsrules_jails_sylve_%d=%d]\n", ctid, ctid)
 		rule += data.DevFSRuleset + "\n"
 		if _, err := f.WriteString(rule); err != nil {
+			f.Close()
 			return "", fmt.Errorf("failed_to_write_devfs_rules: %w", err)
+		}
+		f.Close()
+
+		if _, err := utils.RunCommand("service", "devfs", "restart"); err != nil {
+			return "", fmt.Errorf("failed_to_reload_devfs_rules: %w", err)
 		}
 	}
 

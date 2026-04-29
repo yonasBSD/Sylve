@@ -249,6 +249,10 @@ func (s *Service) ModifyDevfsRuleset(ctId uint, rules string) error {
 			return fmt.Errorf("failed_to_write_devfs_rules: %w", err)
 		}
 
+		if _, err := utils.RunCommand("service", "devfs", "restart"); err != nil {
+			return fmt.Errorf("failed_to_reload_devfs_rules: %w", err)
+		}
+
 		if !found {
 			newLines = append(newLines,
 				fmt.Sprintf("\tdevfs_ruleset=%d;", ctId),
