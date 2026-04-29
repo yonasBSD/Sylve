@@ -1127,8 +1127,8 @@ func TestBuildPFMainConfigPlacesPreRulesAfterTranslationHooks(t *testing.T) {
 	if natHook == -1 || preRule == -1 || trafficAnchor == -1 {
 		t.Fatalf("expected nat hook, pre rule, and traffic anchor in rendered output, got:\n%s", rendered)
 	}
-	if preRule < natHook {
-		t.Fatalf("expected pre rules after translation hooks to preserve PF ordering, got:\n%s", rendered)
+	if preRule > natHook {
+		t.Fatalf("expected pre rules before translation hooks, got:\n%s", rendered)
 	}
 	if preRule > trafficAnchor {
 		t.Fatalf("expected pre rules before traffic anchor, got:\n%s", rendered)

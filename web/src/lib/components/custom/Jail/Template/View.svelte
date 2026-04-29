@@ -248,7 +248,7 @@
 								<div class="p-4">
 									{#if template.networks.length > 0}
 										<div class="grid gap-2">
-											{#each template.networks as network, index}
+											{#each template.networks as network, index (`tmpl-network-${index}`)}
 												<div class="border rounded-md p-3 flex flex-col gap-2 bg-muted/30">
 													<div class="font-medium text-sm flex items-center justify-between gap-2">
 														<div class="flex items-center gap-2">
@@ -356,7 +356,7 @@
 								<div class="p-4">
 									{#if template.hooks.length > 0}
 										<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-											{#each template.hooks as hook, index}
+											{#each template.hooks as hook, index (`tmpl-hook-${index}`)}
 												<button
 													class="border rounded-md px-3 py-2 flex justify-between items-center text-sm bg-muted/30 hover:bg-muted/50 transition-colors cursor-pointer text-left"
 													onclick={() => {
@@ -393,7 +393,7 @@
 										<span class="font-semibold">Allowed Options</span>
 									</div>
 									<div class="p-4 flex flex-wrap gap-2">
-										{#each template.allowedOptions as opt}
+										{#each template.allowedOptions as opt, index (`tmpl-allowed-option-${index}`)}
 											<Badge variant="outline" class="bg-muted text-muted-foreground">{opt}</Badge>
 										{/each}
 									</div>

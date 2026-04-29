@@ -62,10 +62,6 @@ msgstr "हार्डवेयर"
 #: src/routes/[node]/+layout.svelte
 #: src/routes/[node]/+layout.svelte
 #: src/routes/[node]/+layout.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 msgid "Network"
 msgstr "नेटवर्क"
 
@@ -101,8 +97,6 @@ msgstr "ऑब्जेक्ट्स"
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Samba/Config.svelte
 #: src/routes/[node]/+layout.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/storage/samba/settings/+page.svelte
 #: src/routes/[node]/storage/samba/settings/+page.svelte
 msgid "Interfaces"
@@ -548,7 +542,6 @@ msgstr "उपयोगकर्ता"
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Notifications/Bell.svelte
 #: src/lib/components/skeleton/BottomPanel.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/logs/+page.svelte
 #: src/routes/[node]/network/firewall/logs/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
@@ -837,8 +830,6 @@ msgstr "नोट बनाने में विफल"
 #: src/routes/[node]/jail/[node]/network/+page.svelte
 #: src/routes/[node]/jail/[node]/snapshots/+page.svelte
 #: src/routes/[node]/jail/[node]/snapshots/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 #: src/routes/[node]/network/interfaces/+page.svelte
@@ -908,8 +899,6 @@ msgstr "देखें"
 #: src/routes/[node]/network/dhcp/leases/+page.svelte
 #: src/routes/[node]/network/dhcp/leases/+page.svelte
 #: src/routes/[node]/network/dhcp/ranges/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 #: src/routes/[node]/network/objects/+page.svelte
@@ -949,8 +938,6 @@ msgstr "हटाएं"
 #: src/routes/[node]/jail/[node]/network/+page.svelte
 #: src/routes/[node]/network/dhcp/leases/+page.svelte
 #: src/routes/[node]/network/dhcp/ranges/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 #: src/routes/[node]/network/objects/+page.svelte
@@ -1046,8 +1033,6 @@ msgstr "नया"
 #: src/lib/components/custom/ZFS/datasets/volumes/FlashFile.svelte
 #: src/lib/components/custom/ZFS/datasets/volumes/FlashFile.svelte
 #: src/lib/components/ui/dialog/dialog-content.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 msgid "Reset"
 msgstr "रीसेट करें"
 
@@ -1538,8 +1523,6 @@ msgstr "एडमिन"
 #: src/lib/components/custom/ZFS/datasets/snapshots/Rollback.svelte
 #: src/lib/components/custom/ZFS/datasets/volumes/Create.svelte
 #: src/lib/components/custom/ZFS/pools/Create.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/switches/standard/+page.svelte
 #: src/routes/[node]/settings/authentication/groups/+page.svelte
 #: src/routes/[node]/storage/iscsi/initiators/+page.svelte
@@ -1835,8 +1818,6 @@ msgid "Size"
 msgstr "आकार"
 
 #: src/lib/components/custom/Disk/CreatePartition.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 msgid "Actions"
 msgstr "क्रियाएं"
 
@@ -2364,8 +2345,6 @@ msgstr "मॉडल"
 #: src/routes/[node]/jail/[node]/snapshots/+page.svelte
 #: src/routes/[node]/jail/[node]/snapshots/+page.svelte
 #: src/routes/[node]/jail/[node]/summary/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/interfaces/+page.svelte
 #: src/routes/[node]/vm/[node]/snapshots/+page.svelte
 #: src/routes/[node]/vm/[node]/snapshots/+page.svelte
@@ -3262,8 +3241,6 @@ msgstr "ईवेंट प्रगति लोड करने में व�
 #: src/lib/components/custom/Network/Firewall/Traffic/CreateOrEdit.svelte
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Notifications/Bell.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 #: src/routes/datacenter/backups/events/+page.svelte
@@ -3437,8 +3414,6 @@ msgstr "SSH होस्ट"
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Network/Objects/CreateOrEdit.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/storage/iscsi/targets/+page.svelte
 #: src/routes/datacenter/backups/targets/+page.svelte
 msgid "Port"
@@ -4074,10 +4049,6 @@ msgstr "लक्ष्य चुनें"
 #: src/lib/components/custom/Network/Firewall/NAT/Form.svelte
 #: src/lib/components/custom/Network/Firewall/Traffic/CreateOrEdit.svelte
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/datacenter/replication/policies/+page.svelte
 msgid "Priority"
 msgstr "प्राथमिकता"
@@ -4635,10 +4606,6 @@ msgstr "MAC"
 #: src/lib/components/custom/Network/Routes/Form.svelte
 #: src/lib/components/custom/Network/Routes/Form.svelte
 #: src/lib/components/custom/Network/Routes/Form.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 msgid "Host"
 msgstr "होस्ट"
 
@@ -5937,10 +5904,8 @@ msgstr "सहेजें और सॉकेट पर वापस जाए�
 #: src/lib/components/custom/DataCenter/Backups/Targets/Form.svelte
 #: src/lib/components/custom/VM/Extra/CPUSelector.svelte
 #: src/routes/[node]/network/dhcp/config/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/storage/samba/settings/+page.svelte
-msgid "Update "
+msgid "Update"
 msgstr "अपडेट "
 
 #: src/lib/components/custom/VM/Extra/CPUSelector.svelte
@@ -10100,10 +10065,6 @@ msgstr ""
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Network/Objects/CreateOrEdit.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/objects/+page.svelte
 msgid "List"
 msgstr ""
@@ -10116,240 +10077,170 @@ msgstr ""
 msgid "List URLs"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Traffic rule name is required"
-msgstr ""
+#~ msgid "Traffic rule name is required"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Traffic rule saved"
-msgstr ""
+#~ msgid "Traffic rule saved"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Failed to save traffic rule"
-msgstr ""
+#~ msgid "Failed to save traffic rule"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 msgid "Traffic rule deleted"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 msgid "Failed to delete traffic rule"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Traffic rule order updated"
-msgstr ""
+#~ msgid "Traffic rule order updated"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 msgid "Failed to reorder traffic rules"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "NAT rule name is required"
-msgstr ""
+#~ msgid "NAT rule name is required"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "NAT rule saved"
-msgstr ""
+#~ msgid "NAT rule saved"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Failed to save NAT rule"
-msgstr ""
+#~ msgid "Failed to save NAT rule"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 msgid "NAT rule deleted"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 msgid "Failed to delete NAT rule"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "NAT rule order updated"
-msgstr ""
+#~ msgid "NAT rule order updated"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 msgid "Failed to reorder NAT rules"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Advanced firewall settings saved"
-msgstr ""
+#~ msgid "Advanced firewall settings saved"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Failed to save advanced settings"
-msgstr ""
+#~ msgid "Failed to save advanced settings"
+#~ msgstr ""
 
 #: src/routes/[node]/+layout.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 msgid "Traffic Rules"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Rule name"
-msgstr ""
+#~ msgid "Rule name"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "pass"
-msgstr ""
+#~ msgid "pass"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "block"
-msgstr ""
+#~ msgid "block"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "in"
-msgstr ""
+#~ msgid "in"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "out"
-msgstr ""
+#~ msgid "out"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "any"
-msgstr ""
+#~ msgid "any"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "tcp"
-msgstr ""
+#~ msgid "tcp"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "udp"
-msgstr ""
+#~ msgid "udp"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "icmp"
-msgstr ""
+#~ msgid "icmp"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "inet"
-msgstr ""
+#~ msgid "inet"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "inet6"
-msgstr ""
+#~ msgid "inet6"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Interfaces (comma separated)"
-msgstr ""
+#~ msgid "Interfaces (comma separated)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "<0/> Enabled"
-msgstr ""
+#~ msgid "<0/> Enabled"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Source raw (optional)"
-msgstr ""
+#~ msgid "Source raw (optional)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Source object (optional)"
-msgstr ""
+#~ msgid "Source object (optional)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Destination raw (optional)"
-msgstr ""
+#~ msgid "Destination raw (optional)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Destination object (optional)"
-msgstr ""
+#~ msgid "Destination object (optional)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Source ports raw (optional)"
-msgstr ""
+#~ msgid "Source ports raw (optional)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Source port object (optional)"
-msgstr ""
+#~ msgid "Source port object (optional)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Destination ports raw (optional)"
-msgstr ""
+#~ msgid "Destination ports raw (optional)"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Destination port object (optional)"
-msgstr ""
+#~ msgid "Destination port object (optional)"
+#~ msgstr ""
 
-#. 0: trafficForm.id > 0 ? 'Update' \\: 'Create'
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "{0} Rule"
-msgstr ""
+#~ msgid "{0} Rule"
+#~ msgstr ""
 
 #: src/lib/components/custom/Network/Firewall/NAT/CreateOrEdit.svelte
 #: src/lib/components/custom/Network/Firewall/NAT/Form.svelte
 #: src/lib/components/custom/Network/Firewall/Traffic/CreateOrEdit.svelte
 #: src/lib/components/custom/Network/Firewall/Traffic/Form.svelte
 #: src/lib/components/custom/Network/Routes/CreateOrEdit.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
 #: src/routes/[node]/network/firewall/nat/+page.svelte
 #: src/routes/[node]/network/firewall/traffic/+page.svelte
 #: src/routes/[node]/network/routes/+page.svelte
 msgid "Destination"
 msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Up"
-msgstr ""
+#~ msgid "Up"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Down"
-msgstr ""
+#~ msgid "Down"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "NAT Rules (Outbound)"
-msgstr ""
+#~ msgid "NAT Rules (Outbound)"
+#~ msgstr ""
 
-#. 0: natForm.id > 0 ? 'Update' \\: 'Create'
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "{0} NAT Rule"
-msgstr ""
+#~ msgid "{0} NAT Rule"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Advanced Settings"
-msgstr ""
+#~ msgid "Advanced Settings"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Custom PF text injected globally before and after Sylve anchors."
-msgstr ""
+#~ msgid "Custom PF text injected globally before and after Sylve anchors."
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Pre Rules"
-msgstr ""
+#~ msgid "Pre Rules"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Post Rules"
-msgstr ""
+#~ msgid "Post Rules"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Save Advanced Settings"
-msgstr ""
+#~ msgid "Save Advanced Settings"
+#~ msgstr ""
 
-#: src/routes/[node]/network/firewall/+page.svelte
-msgid "Interface Reference"
-msgstr ""
+#~ msgid "Interface Reference"
+#~ msgstr ""
 
 #. 0: value.err
 #: src/routes/[node]/network/objects/+page.svelte
@@ -13345,8 +13236,10 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#~ msgid "Select Users"
-#~ msgstr ""
+#: src/routes/[node]/settings/authentication/groups/+page.svelte
+#: src/routes/[node]/settings/authentication/groups/+page.svelte
+msgid "Select Users"
+msgstr ""
 
 #~ msgid "Console settings - {0} <0>Console settings - {0}</0>"
 #~ msgstr ""
@@ -13362,4 +13255,8 @@ msgstr ""
 #. 0: title.replaceAll('Template', '')
 #: src/lib/components/custom/Jail/Template/View.svelte
 msgid "Jail Template - {0}"
+msgstr ""
+
+#: src/routes/[node]/network/firewall/+page.svelte
+msgid "Redirecting to Traffic Rules..."
 msgstr ""
