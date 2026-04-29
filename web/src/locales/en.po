@@ -13260,3 +13260,219 @@ msgstr "Jail Template - {0}"
 #: src/routes/[node]/network/firewall/+page.svelte
 msgid "Redirecting to Traffic Rules..."
 msgstr "Redirecting to Traffic Rules..."
+
+#: src/routes/inactive-node/+page.svelte
+msgid ""
+"This node can’t be reached right now. Check the network connection and confirm the node is\n"
+"powered on."
+msgstr ""
+"This node can’t be reached right now. Check the network connection and confirm the node is\n"
+"powered on."
+
+#~ msgid "⌘⇧Q"
+#~ msgstr "⌘⇧Q"
+
+#: src/lib/components/custom/Initialize.svelte
+msgid "We've hit the following errors during initialization"
+msgstr "We've hit the following errors during initialization"
+
+#. NaN: sessionId
+#: src/lib/components/custom/Terminal.svelte
+msgid "Session killed: {0}"
+msgstr "Session killed: {0}"
+
+#: src/lib/components/custom/Terminal.svelte
+msgid "Add new tab"
+msgstr "Add new tab"
+
+#: src/routes/datacenter/cluster/+page.svelte
+msgid "This will reset clustering data on this node"
+msgstr "This will reset clustering data on this node"
+
+#~ msgid "Network RX"
+#~ msgstr "Network RX"
+
+#~ msgid "Network TX"
+#~ msgstr "Network TX"
+
+#. NaN: s3Storage.bucket
+#: src/routes/datacenter/storage/+page.svelte
+msgid "Bucket: {0}<br/>Region: {1}"
+msgstr "Bucket: {0}<br/>Region: {1}"
+
+#. NaN: dirStorage.path
+#: src/routes/datacenter/storage/+page.svelte
+msgid "Path: {0}"
+msgstr "Path: {0}"
+
+#. NaN: activeRow?.name
+#: src/routes/datacenter/storage/+page.svelte
+msgid "This will delete {0}"
+msgstr "This will delete {0}"
+
+#. NaN: activeRow?.name
+#: src/routes/datacenter/storage/+page.svelte
+msgid "Failed to delete {0}"
+msgstr "Failed to delete {0}"
+
+#. NaN: activeRow?.name
+#: src/routes/datacenter/storage/+page.svelte
+msgid "Deleted {0}"
+msgstr "Deleted {0}"
+
+#: src/lib/components/custom/Charts/Area.svelte
+msgid "HH:mm"
+msgstr "HH:mm"
+
+#: src/lib/components/custom/Charts/Area.svelte
+msgid "Disable Zoom"
+msgstr "Disable Zoom"
+
+#: src/lib/components/custom/Charts/Area.svelte
+msgid "Enable Zoom"
+msgstr "Enable Zoom"
+
+#: src/lib/components/custom/Charts/Area.svelte
+#: src/lib/components/custom/Charts/Bar.svelte
+msgid "<0/> Reset zoom"
+msgstr "<0/> Reset zoom"
+
+#: src/lib/components/custom/Charts/Bar.svelte
+msgid "Baseline"
+msgstr "Baseline"
+
+#: src/lib/components/custom/VM/Options/Serial.svelte
+msgid ""
+"This VM currently has serial console access enabled. You can disable it using the button\n"
+"below."
+msgstr ""
+"This VM currently has serial console access enabled. You can disable it using the button\n"
+"below."
+
+#: src/lib/components/custom/VM/Options/Serial.svelte
+msgid ""
+"This VM currently has serial console access disabled. You can enable it using the button\n"
+"below."
+msgstr ""
+"This VM currently has serial console access disabled. You can enable it using the button\n"
+"below."
+
+#: src/lib/components/custom/VM/Options/WoL.svelte
+msgid ""
+"Setting this option to be <0>on</0> will enable Wake on LAN for this VM for all MAC addresses attached\n"
+"to it"
+msgstr ""
+"Setting this option to be <0>on</0> will enable Wake on LAN for this VM for all MAC addresses attached\n"
+"to it"
+
+#. NaN: data.ctId
+#: src/routes/[node]/jail/[node]/console/+page.svelte
+msgid "Jail console connected for jail {0}"
+msgstr "Jail console connected for jail {0}"
+
+#: src/routes/[node]/settings/authentication/groups/+page.svelte
+msgid "No users selected"
+msgstr "No users selected"
+
+#: src/routes/[node]/settings/authentication/groups/+page.svelte
+msgid "Failed to add users to group"
+msgstr "Failed to add users to group"
+
+#: src/routes/[node]/settings/authentication/groups/+page.svelte
+msgid "Users added to group"
+msgstr "Users added to group"
+
+#: src/routes/[node]/settings/authentication/groups/+page.svelte
+msgid "Add Users"
+msgstr "Add Users"
+
+#: src/routes/[node]/vm/[node]/console/+page.svelte
+msgid "Kill Serial Session"
+msgstr "Kill Serial Session"
+
+#: src/routes/[node]/vm/[node]/console/+page.svelte
+msgid "Reconnect Serial"
+msgstr "Reconnect Serial"
+
+#: src/lib/components/custom/VM/Options/IgnoreUMSR.svelte
+msgid ""
+"Enable this option to ignore accesses to unimplemented Model-Specific Registers (MSRs) by the\n"
+"VM. This can help prevent crashes or instability caused by such accesses, but may also lead to\n"
+"unexpected behavior if the guest OS relies on these MSRs."
+msgstr ""
+"Enable this option to ignore accesses to unimplemented Model-Specific Registers (MSRs) by the\n"
+"VM. This can help prevent crashes or instability caused by such accesses, but may also lead to\n"
+"unexpected behavior if the guest OS relies on these MSRs."
+
+#~ msgid ""
+#~ "The above script will run during {0}, Ensure they are valid for the host or\n"
+#~ "jail"
+#~ msgstr ""
+#~ "The above script will run during {0}, Ensure they are valid for the host or\n"
+#~ "jail"
+
+#. NaN: currentTab?.id
+#: src/lib/components/custom/Terminal.svelte
+msgid "Terminal WebSocket connected for tab {0}"
+msgstr "Terminal WebSocket connected for tab {0}"
+
+#. NaN: currentTab?.id
+#: src/lib/components/custom/Terminal.svelte
+msgid "Terminal WebSocket disconnected for tab {0}"
+msgstr "Terminal WebSocket disconnected for tab {0}"
+
+#: src/lib/components/custom/Jail/Network/Inherit.svelte
+msgid ""
+"This option will disinherit the network configuration from the host. Choose this if you want\n"
+"to attach a custom network switch to this jail or disable networking entirely. Changes will\n"
+"take effect after restarting the jail."
+msgstr ""
+"This option will disinherit the network configuration from the host. Choose this if you want\n"
+"to attach a custom network switch to this jail or disable networking entirely. Changes will\n"
+"take effect after restarting the jail."
+
+#: src/lib/components/custom/Jail/Network/Inherit.svelte
+msgid ""
+"This option will inherit the network configuration from the host. Choose this if you want\n"
+"the jail to share the host's networking. You can select which protocols to inherit below.\n"
+"Changes will take effect after restarting the jail."
+msgstr ""
+"This option will inherit the network configuration from the host. Choose this if you want\n"
+"the jail to share the host's networking. You can select which protocols to inherit below.\n"
+"Changes will take effect after restarting the jail."
+
+#: src/routes/[node]/settings/system/+page.svelte
+msgid "ZFS Pools updated successfully"
+msgstr "ZFS Pools updated successfully"
+
+#: src/lib/components/custom/Settings/System/ZFSPools.svelte
+msgid "Select ZFS Pools"
+msgstr "Select ZFS Pools"
+
+#: src/routes/[node]/settings/system/+page.svelte
+msgid "Cannot remove initialized ZFS Pools"
+msgstr "Cannot remove initialized ZFS Pools"
+
+#: src/lib/components/custom/Terminal.svelte
+msgid "Failed to connect to terminal WebSocket"
+msgstr "Failed to connect to terminal WebSocket"
+
+#: src/lib/runes/useQuery.svelte.ts
+msgid "Unexpected error occurred"
+msgstr "Unexpected error occurred"
+
+#~ msgid ""
+#~ "A <0>full system reboot</0> is required for Sylve to\n"
+#~ "finish initialization. Continue when ready."
+#~ msgstr ""
+#~ "A <0>full system reboot</0> is required for Sylve to\n"
+#~ "finish initialization. Continue when ready."
+
+#~ msgid "<0/> Restart"
+#~ msgstr "<0/> Restart"
+
+#~ msgid "<0/> Restarting..."
+#~ msgstr "<0/> Restarting..."
+
+#~ msgid "We need to restart the system to apply changes"
+#~ msgstr "We need to restart the system to apply changes"
