@@ -31,4 +31,10 @@ assignees: hayzamjs
   - **Operating System** (where sylve is running): FreeBSD 15.x (Only >= 15.0 is officially supported)
   - **Browser**: [all | Chrome XX | Firefox XX | Safari XX ]
 
+- **Please tell us about your system's specifications**
+  - **CPU**: XXXX
+  - **RAM**: X GB
+  - **Virtualized**: Yes / No
+  - **Passthrough Enabled**: Yes / No
+
 - Other information (e.g. detailed explanation, stacktraces, related issues, suggestions how to fix, links for us to have context, eg. stackoverflow, discord, etc)
