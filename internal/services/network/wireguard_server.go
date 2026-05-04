@@ -449,7 +449,11 @@ func (s *Service) InitWireGuardServer(req *InitWireGuardServerRequest) error {
 		return err
 	}
 
-	return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+	if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+		return err
+	}
+	s.flushWireGuardMetricsOnConfigChange()
+	return nil
 }
 
 func (s *Service) EditWireGuardServer(req InitWireGuardServerRequest) error {
@@ -523,13 +527,18 @@ func (s *Service) EditWireGuardServer(req InitWireGuardServerRequest) error {
 		if err := s.syncWireGuardManagedFirewallRules(&server); err != nil {
 			return err
 		}
-		return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
 	if err := s.syncWireGuardManagedFirewallRules(&server); err != nil {
 		return err
 	}
 
+	s.flushWireGuardMetricsOnConfigChange()
 	return nil
 }
 
@@ -558,13 +567,21 @@ func (s *Service) ToggleWireGuardServer() error {
 		if err := s.syncWireGuardManagedFirewallRules(&server); err != nil {
 			return err
 		}
-		return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
 	if err := s.syncWireGuardManagedFirewallRules(&server); err != nil {
 		return err
 	}
-	return s.teardownWireGuardServerRuntime(&server)
+	if err := s.teardownWireGuardServerRuntime(&server); err != nil {
+		return err
+	}
+	s.flushWireGuardMetricsOnConfigChange()
+	return nil
 }
 
 func (s *Service) DeinitWireGuardServer() error {
@@ -595,7 +612,11 @@ func (s *Service) DeinitWireGuardServer() error {
 		return err
 	}
 
-	return s.DB.Delete(&server).Error
+	if err := s.DB.Delete(&server).Error; err != nil {
+		return err
+	}
+	s.flushWireGuardMetricsOnConfigChange()
+	return nil
 }
 
 func (s *Service) AddWireGuardServerPeer(req WireGuardServerPeerRequest) error {
@@ -690,9 +711,14 @@ func (s *Service) AddWireGuardServerPeer(req WireGuardServerPeerRequest) error {
 		if err := s.applyWireGuardServerRuntime(&server); err != nil {
 			return err
 		}
-		return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
+	s.flushWireGuardMetricsOnConfigChange()
 	return nil
 }
 
@@ -781,9 +807,14 @@ func (s *Service) EditWireGuardServerPeer(req WireGuardServerPeerRequest) error 
 		if err := s.applyWireGuardServerRuntime(&server); err != nil {
 			return err
 		}
-		return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
+	s.flushWireGuardMetricsOnConfigChange()
 	return nil
 }
 
@@ -814,9 +845,14 @@ func (s *Service) ToggleWireGuardServerPeer(id uint) error {
 		if err := s.applyWireGuardServerRuntime(&server); err != nil {
 			return err
 		}
-		return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
+	s.flushWireGuardMetricsOnConfigChange()
 	return nil
 }
 
@@ -849,9 +885,14 @@ func (s *Service) RemoveWireGuardServerPeer(id uint) error {
 		if err := s.applyWireGuardServerRuntime(&server); err != nil {
 			return err
 		}
-		return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
+	s.flushWireGuardMetricsOnConfigChange()
 	return nil
 }
 
@@ -880,9 +921,14 @@ func (s *Service) RemoveWireGuardServerPeers(ids []uint) error {
 		if err := s.applyWireGuardServerRuntime(&server); err != nil {
 			return err
 		}
-		return s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&server).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
+	s.flushWireGuardMetricsOnConfigChange()
 	return nil
 }
 

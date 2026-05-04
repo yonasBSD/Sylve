@@ -17,6 +17,7 @@ import (
 	"github.com/alchemillahq/sylve/internal/services/auth"
 	"github.com/alchemillahq/sylve/internal/services/jail"
 	"github.com/alchemillahq/sylve/internal/services/libvirt"
+	"github.com/alchemillahq/sylve/internal/services/lifecycle"
 	"github.com/alchemillahq/sylve/internal/services/network"
 	"github.com/chzyer/readline"
 )
@@ -27,6 +28,7 @@ type Context struct {
 	Auth           *auth.Service
 	Jail           *jail.Service
 	VirtualMachine *libvirt.Service
+	Lifecycle      *lifecycle.Service
 	Network        *network.Service
 	QuitChan       chan os.Signal
 	Out            io.Writer

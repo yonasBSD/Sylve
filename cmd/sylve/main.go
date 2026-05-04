@@ -12,12 +12,16 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
+	"runtime"
 	"sync"
 	"syscall"
 	"time"
+
+	_ "net/http/pprof"
 
 	"github.com/alchemillahq/sylve/internal/cmd"
 	"github.com/alchemillahq/sylve/internal/config"
@@ -95,6 +99,27 @@ func main() {
 		Int8("logLevel", cfg.LogLevel).
 		Str("dataPath", cfg.DataPath).
 		Msg("Sylve configuration loaded")
+
+	if cfg.Profile {
+		runtime.SetBlockProfileRate(1)
+		runtime.SetMutexProfileFraction(5)
+
+		go func() {
+			addr := "127.0.0.1:6060"
+
+			ln, err := net.Listen("tcp", addr)
+			if err != nil {
+				logger.L.Error().Err(err).Str("addr", addr).Msg("failed_to_start_pprof")
+				return
+			}
+
+			logger.L.Info().Str("addr", addr).Msg("pprof_server_started")
+
+			if err := http.Serve(ln, nil); err != nil && err != http.ErrServerClosed {
+				logger.L.Error().Err(err).Msg("pprof_server_failed")
+			}
+		}()
+	}
 
 	logger.L.Info().Msgf("Sylve logs: %s/logs.json", cfg.DataPath)
 

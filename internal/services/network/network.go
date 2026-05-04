@@ -13,6 +13,8 @@ import (
 	"sync"
 	"time"
 
+	"golang.zx2c4.com/wireguard/wgctrl"
+
 	libvirtServiceInterfaces "github.com/alchemillahq/sylve/internal/interfaces/services/libvirt"
 	networkServiceInterfaces "github.com/alchemillahq/sylve/internal/interfaces/services/network"
 
@@ -20,6 +22,44 @@ import (
 )
 
 var _ networkServiceInterfaces.NetworkServiceInterface = (*Service)(nil)
+
+// wgPeerMetrics holds in-memory RX/TX state for a single WireGuard server peer.
+type wgPeerMetrics struct {
+	id            uint
+	rx            uint64
+	tx            uint64
+	lastKernelRX  uint64
+	lastKernelTX  uint64
+	lastHandshake time.Time
+	dirty         bool
+}
+
+// wgServerMetricsCache holds in-memory RX/TX state for the WireGuard server and
+// all its peers. It is updated every 5 s and flushed to DB every 1 minute.
+type wgServerMetricsCache struct {
+	id            uint
+	rx            uint64
+	tx            uint64
+	lastKernelRX  uint64
+	lastKernelTX  uint64
+	lastHandshake time.Time
+	restartedAt   time.Time
+	dirty         bool
+	peers         map[string]*wgPeerMetrics // key: trimmed public key
+}
+
+// wgClientMetricsCache holds in-memory RX/TX state for a single outbound
+// WireGuard client interface.
+type wgClientMetricsCache struct {
+	id            uint
+	rx            uint64
+	tx            uint64
+	kernelLastRX  uint64
+	kernelLastTX  uint64
+	lastHandshake time.Time
+	restartedAt   time.Time
+	dirty         bool
+}
 
 type Service struct {
 	DB                        *gorm.DB
@@ -31,7 +71,12 @@ type Service struct {
 	firewallTelOnce           sync.Once
 	wgMonitorMutex            sync.Mutex
 	wgMonitorCancel           context.CancelFunc
+	wgClient                  *wgctrl.Client
+	wgClientMutex             sync.Mutex
+	wgMetricsMutex            sync.Mutex
 	wgEndpointCache           map[string][]string
+	wgServerCache             *wgServerMetricsCache
+	wgClientMetricsCache      map[uint]*wgClientMetricsCache
 	listSnapshotMigrationOnce sync.Once
 
 	LibVirt            libvirtServiceInterfaces.LibvirtServiceInterface
@@ -45,11 +90,12 @@ func (s *Service) RegisterOnJailObjectUpdateCallback(cb func(jailIDs []uint)) {
 
 func NewNetworkService(db *gorm.DB, telemetryDB *gorm.DB, libvirt libvirtServiceInterfaces.LibvirtServiceInterface) networkServiceInterfaces.NetworkServiceInterface {
 	svc := &Service{
-		DB:                db,
-		TelemetryDB:       telemetryDB,
-		LibVirt:           libvirt,
-		firewallTelemetry: newFirewallTelemetryRuntime(),
-		wgEndpointCache:   map[string][]string{},
+		DB:                   db,
+		TelemetryDB:          telemetryDB,
+		LibVirt:              libvirt,
+		firewallTelemetry:    newFirewallTelemetryRuntime(),
+		wgEndpointCache:      map[string][]string{},
+		wgClientMetricsCache: make(map[uint]*wgClientMetricsCache),
 	}
 
 	svc.ensureListSnapshotMigration()

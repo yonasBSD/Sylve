@@ -724,6 +724,32 @@ func readWireGuardDevice(iface string) (*wgtypes.Device, error) {
 	return client.Device(iface)
 }
 
+// readWireGuardDeviceWithClient reads device state using the Service's persistent
+// wgctrl client, avoiding a new kernel socket on every call. If the client has
+// gone stale it is replaced once before returning an error.
+func (s *Service) readWireGuardDeviceWithClient(iface string) (*wgtypes.Device, error) {
+	s.wgClientMutex.Lock()
+	defer s.wgClientMutex.Unlock()
+
+	if s.wgClient == nil {
+		return nil, fmt.Errorf("wireguard_monitor_client_not_initialized")
+	}
+
+	dev, err := s.wgClient.Device(iface)
+	if err != nil {
+		_ = s.wgClient.Close()
+		newClient, newErr := wireGuardNewWGClient()
+		if newErr != nil {
+			s.wgClient = nil
+			return nil, newErr
+		}
+		s.wgClient = newClient
+		return s.wgClient.Device(iface)
+	}
+
+	return dev, nil
+}
+
 func (s *Service) EnableWireGuardService(ctx context.Context) error {
 	if err := loadWireGuardKernelModule(); err != nil {
 		return err

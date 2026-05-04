@@ -145,9 +145,14 @@ func (s *Service) CreateWireGuardClient(req *WireGuardClientRequest) error {
 			_ = s.DB.Delete(&client).Error
 			return err
 		}
-		return s.DB.Model(&client).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&client).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
+	s.flushWireGuardMetricsOnConfigChange()
 	return nil
 }
 
@@ -264,10 +269,18 @@ func (s *Service) EditWireGuardClient(req *WireGuardClientRequest) error {
 		if err := s.applyWireGuardClientRuntime(&client); err != nil {
 			return err
 		}
-		return s.DB.Model(&client).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&client).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
-	return s.teardownWireGuardClientRuntime(&client)
+	if err := s.teardownWireGuardClientRuntime(&client); err != nil {
+		return err
+	}
+	s.flushWireGuardMetricsOnConfigChange()
+	return nil
 }
 
 func (s *Service) ToggleWireGuardClient(id uint) error {
@@ -292,10 +305,18 @@ func (s *Service) ToggleWireGuardClient(id uint) error {
 		if err := s.applyWireGuardClientRuntime(&client); err != nil {
 			return err
 		}
-		return s.DB.Model(&client).Update("restarted_at", wireGuardCurrentTime()).Error
+		if err := s.DB.Model(&client).Update("restarted_at", wireGuardCurrentTime()).Error; err != nil {
+			return err
+		}
+		s.flushWireGuardMetricsOnConfigChange()
+		return nil
 	}
 
-	return s.teardownWireGuardClientRuntime(&client)
+	if err := s.teardownWireGuardClientRuntime(&client); err != nil {
+		return err
+	}
+	s.flushWireGuardMetricsOnConfigChange()
+	return nil
 }
 
 func (s *Service) DeleteWireGuardClient(id uint) error {
@@ -315,7 +336,11 @@ func (s *Service) DeleteWireGuardClient(id uint) error {
 		return err
 	}
 
-	return s.DB.Delete(&client).Error
+	if err := s.DB.Delete(&client).Error; err != nil {
+		return err
+	}
+	s.flushWireGuardMetricsOnConfigChange()
+	return nil
 }
 
 func buildWireGuardClientPeer(client *networkModels.WireGuardClient) (wgtypes.PeerConfig, error) {

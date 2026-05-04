@@ -53,6 +53,7 @@ const (
 type SylveConfig struct {
 	Environment   Environment     `json:"environment"`
 	ProxyToVite   bool            `json:"proxyToVite"`
+	Profile       bool            `json:"profile"`
 	IP            string          `json:"ip"`
 	Port          int             `json:"port"`
 	HTTPPort      int             `json:"httpPort"`
