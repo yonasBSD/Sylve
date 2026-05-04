@@ -11,6 +11,7 @@ package vmModels
 import (
 	"encoding/json"
 	"fmt"
+	"runtime"
 	"strings"
 	"time"
 
@@ -73,8 +74,9 @@ const (
 type VMBootROM string
 
 const (
-	VMBootROMUEFI VMBootROM = "uefi"
-	VMBootROMNone VMBootROM = "none"
+	VMBootROMUEFI  VMBootROM = "uefi"
+	VMBootROMUBoot VMBootROM = "uboot"
+	VMBootROMNone  VMBootROM = "none"
 )
 
 type VMStorageDataset struct {
@@ -315,7 +317,7 @@ type VM struct {
 	CloudInitData          string       `json:"cloudInitData" gorm:"type:text"`
 	CloudInitMetaData      string       `json:"cloudInitMetaData" gorm:"type:text"`
 	CloudInitNetworkConfig string       `json:"cloudInitNetworkConfig" gorm:"type:text"`
-	BootROM                VMBootROM    `json:"bootRom" gorm:"column:boot_rom;default:'uefi'"`
+	BootROM                VMBootROM    `json:"bootRom" gorm:"column:boot_rom"`
 	ExtraBhyveOptions      []string     `json:"extraBhyveOptions" gorm:"serializer:json;type:json"`
 	IgnoreUMSR             bool         `json:"ignoreUMSR" gorm:"default:false"`
 	QemuGuestAgent         bool         `json:"qemuGuestAgent" gorm:"default:false"`
@@ -363,7 +365,7 @@ type VMTemplate struct {
 	CloudInitData          string    `json:"cloudInitData" gorm:"type:text"`
 	CloudInitMetaData      string    `json:"cloudInitMetaData" gorm:"type:text"`
 	CloudInitNetworkConfig string    `json:"cloudInitNetworkConfig" gorm:"type:text"`
-	BootROM                VMBootROM `json:"bootRom" gorm:"column:boot_rom;default:'uefi'"`
+	BootROM                VMBootROM `json:"bootRom" gorm:"column:boot_rom"`
 	ExtraBhyveOptions      []string  `json:"extraBhyveOptions" gorm:"serializer:json;type:json"`
 	IgnoreUMSR             bool      `json:"ignoreUMSR" gorm:"default:false"`
 	QemuGuestAgent         bool      `json:"qemuGuestAgent" gorm:"default:false"`
@@ -379,10 +381,21 @@ func (VMTemplate) TableName() string {
 	return "vm_templates"
 }
 
+func defaultBootROM() VMBootROM {
+	if runtime.GOARCH == "arm64" {
+		return VMBootROMUBoot
+	}
+	return VMBootROMUEFI
+}
+
 func (vm *VM) AfterFind(tx *gorm.DB) error {
 	switch strings.TrimSpace(strings.ToLower(string(vm.BootROM))) {
 	case string(VMBootROMNone):
 		vm.BootROM = VMBootROMNone
+	case string(VMBootROMUBoot):
+		vm.BootROM = VMBootROMUBoot
+	case "":
+		vm.BootROM = defaultBootROM()
 	default:
 		vm.BootROM = VMBootROMUEFI
 	}
@@ -394,6 +407,10 @@ func (template *VMTemplate) AfterFind(tx *gorm.DB) error {
 	switch strings.TrimSpace(strings.ToLower(string(template.BootROM))) {
 	case string(VMBootROMNone):
 		template.BootROM = VMBootROMNone
+	case string(VMBootROMUBoot):
+		template.BootROM = VMBootROMUBoot
+	case "":
+		template.BootROM = defaultBootROM()
 	default:
 		template.BootROM = VMBootROMUEFI
 	}

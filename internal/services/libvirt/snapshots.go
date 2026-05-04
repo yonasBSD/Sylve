@@ -643,9 +643,12 @@ func (s *Service) restoreVMRuntimeArtifactsFromSnapshot(
 	}
 
 	artifactNames := []string{
-		fmt.Sprintf("%d_vars.fd", rid),
 		fmt.Sprintf("%d_tpm.log", rid),
 		fmt.Sprintf("%d_tpm.state", rid),
+	}
+
+	if hostUsesSplitFirmware() {
+		artifactNames = append(artifactNames, fmt.Sprintf("%d_vars.fd", rid))
 	}
 
 	for _, artifactName := range artifactNames {

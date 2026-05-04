@@ -186,6 +186,11 @@ type CPU struct {
 	Topology Topology `xml:"topology"`
 }
 
+type OSType struct {
+	Arch string `xml:"arch,attr"`
+	Text string `xml:",chardata"`
+}
+
 type Loader struct {
 	ReadOnly string `xml:"readonly,attr"`
 	Type     string `xml:"type,attr"`
@@ -193,7 +198,7 @@ type Loader struct {
 }
 
 type OS struct {
-	Type   string  `xml:"type"`
+	Type   OSType  `xml:"type"`
 	Loader *Loader `xml:"loader,omitempty"`
 }
 

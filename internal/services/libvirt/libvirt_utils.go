@@ -406,6 +406,11 @@ func (s *Service) CreateVMDirectory(rid uint) (string, error) {
 }
 
 func (s *Service) ResetUEFIVars(rid uint) error {
+	// u-boot on ARM64 is a single firmware binary — no VARS file to reset
+	if !hostUsesSplitFirmware() {
+		return nil
+	}
+
 	vmDir, err := config.GetVMsPath()
 	if err != nil {
 		return fmt.Errorf("failed to get VMs path: %w", err)

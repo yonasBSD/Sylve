@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 
 	vmModels "github.com/alchemillahq/sylve/internal/db/models/vm"
@@ -19,13 +20,52 @@ import (
 )
 
 const (
-	uefiFirmwarePath = "/usr/local/share/uefi-firmware/BHYVE_UEFI.fd"
+	uefiFirmwarePath  = "/usr/local/share/uefi-firmware/BHYVE_UEFI.fd"
+	ubootFirmwarePath = "/usr/local/share/u-boot/u-boot-bhyve-arm64/u-boot.bin"
 )
+
+func hostLibvirtArch() string {
+	switch runtime.GOARCH {
+	case "amd64":
+		return "x86_64"
+	case "arm64":
+		return "aarch64"
+	default:
+		return runtime.GOARCH
+	}
+}
+
+func hostFirmwarePath() string {
+	switch runtime.GOARCH {
+	case "arm64":
+		return ubootFirmwarePath
+	default:
+		return uefiFirmwarePath
+	}
+}
+
+func hostUsesSplitFirmware() bool {
+	return runtime.GOARCH != "arm64"
+}
+
+func availableBootROMs() []vmModels.VMBootROM {
+	if runtime.GOARCH == "arm64" {
+		return []vmModels.VMBootROM{vmModels.VMBootROMUBoot, vmModels.VMBootROMNone}
+	}
+	return []vmModels.VMBootROM{vmModels.VMBootROMUEFI, vmModels.VMBootROMNone}
+}
 
 func normalizeBootROMValue(value vmModels.VMBootROM) vmModels.VMBootROM {
 	switch strings.TrimSpace(strings.ToLower(string(value))) {
-	case "", string(vmModels.VMBootROMUEFI):
+	case "":
+		if runtime.GOARCH == "arm64" {
+			return vmModels.VMBootROMUBoot
+		}
 		return vmModels.VMBootROMUEFI
+	case string(vmModels.VMBootROMUEFI):
+		return vmModels.VMBootROMUEFI
+	case string(vmModels.VMBootROMUBoot):
+		return vmModels.VMBootROMUBoot
 	case string(vmModels.VMBootROMNone):
 		return vmModels.VMBootROMNone
 	default:
@@ -34,16 +74,29 @@ func normalizeBootROMValue(value vmModels.VMBootROM) vmModels.VMBootROM {
 }
 
 func parseBootROMValue(value string) (vmModels.VMBootROM, error) {
-	if strings.TrimSpace(strings.ToLower(value)) == "uefi_csm" {
-		return "", fmt.Errorf("invalid_boot_rom: %s", strings.TrimSpace(value))
+	trimmed := strings.TrimSpace(strings.ToLower(value))
+
+	if trimmed == "uefi_csm" {
+		return "", fmt.Errorf("invalid_boot_rom: %s", trimmed)
 	}
 
-	normalized := normalizeBootROMValue(vmModels.VMBootROM(value))
+	normalized := normalizeBootROMValue(vmModels.VMBootROM(trimmed))
+
 	switch normalized {
-	case vmModels.VMBootROMUEFI, vmModels.VMBootROMNone:
+	case vmModels.VMBootROMNone:
+		return normalized, nil
+	case vmModels.VMBootROMUEFI:
+		if runtime.GOARCH == "arm64" {
+			return "", fmt.Errorf("uefi_firmware_not_available_on_arm64")
+		}
+		return normalized, nil
+	case vmModels.VMBootROMUBoot:
+		if runtime.GOARCH != "arm64" {
+			return "", fmt.Errorf("uboot_only_available_on_arm64")
+		}
 		return normalized, nil
 	default:
-		return "", fmt.Errorf("invalid_boot_rom: %s", strings.TrimSpace(value))
+		return "", fmt.Errorf("invalid_boot_rom: %s", trimmed)
 	}
 }
 
@@ -51,6 +104,12 @@ func buildBootROMLoader(bootROM vmModels.VMBootROM, vmPath string, rid uint) *li
 	switch normalizeBootROMValue(bootROM) {
 	case vmModels.VMBootROMNone:
 		return nil
+	case vmModels.VMBootROMUBoot:
+		return &libvirtServiceInterfaces.Loader{
+			ReadOnly: "yes",
+			Type:     "pflash",
+			Path:     ubootFirmwarePath,
+		}
 	default:
 		return &libvirtServiceInterfaces.Loader{
 			ReadOnly: "yes",
@@ -67,6 +126,11 @@ func (s *Service) ensureVMBootROMArtifacts(rid uint, bootROM vmModels.VMBootROM,
 
 	normalized := normalizeBootROMValue(bootROM)
 	if normalized == vmModels.VMBootROMNone {
+		return nil
+	}
+
+	// u-boot is a single firmware binary — no per-VM VARS file to prepare
+	if normalized == vmModels.VMBootROMUBoot {
 		return nil
 	}
 

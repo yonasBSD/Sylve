@@ -134,7 +134,14 @@ func (s *Service) CheckPackageDependencies(basicSettings models.BasicSettings) e
 
 	if basicSettings.Services != nil {
 		if slices.Contains(basicSettings.Services, models.Virtualization) {
-			requiredPackages = append(requiredPackages, "libvirt", "bhyve-firmware", "swtpm")
+			requiredPackages = append(requiredPackages, "libvirt", "swtpm")
+
+			switch runtime.GOARCH {
+			case "amd64":
+				requiredPackages = append(requiredPackages, "bhyve-firmware")
+			case "arm64":
+				requiredPackages = append(requiredPackages, "u-boot-bhyve-arm64")
+			}
 		}
 
 		if slices.Contains(basicSettings.Services, models.DHCPServer) {

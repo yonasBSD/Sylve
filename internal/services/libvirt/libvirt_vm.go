@@ -286,7 +286,10 @@ func (s *Service) CreateVmXML(vm vmModels.VM, vmPath string) (string, error) {
 		},
 		VCPU: (vm.CPUSockets * vm.CPUCores * vm.CPUThreads),
 		OS: libvirtServiceInterfaces.OS{
-			Type:   "hvm",
+			Type: libvirtServiceInterfaces.OSType{
+				Arch: hostLibvirtArch(),
+				Text: "hvm",
+			},
 			Loader: buildBootROMLoader(vm.BootROM, vmPath, vm.RID),
 		},
 		Features: features,
