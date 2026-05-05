@@ -12,6 +12,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"net"
+	"os"
 	"strconv"
 	"strings"
 
@@ -215,21 +216,44 @@ func GetPortUserPID(proto string, port int) (int, error) {
 		return 0, fmt.Errorf("failed to run sockstat: %w", err)
 	}
 
+	ownPID := os.Getpid()
+	portStr := fmt.Sprintf(":%d", port)
+
 	lines := strings.Split(output, "\n")
 	for _, line := range lines {
-		if strings.Contains(line, fmt.Sprintf(":%d", port)) {
-			fields := strings.Fields(line)
-			if len(fields) >= 3 {
-				pid := fields[2]
+		if !strings.Contains(line, portStr) {
+			continue
+		}
 
-				pidInt, err := strconv.Atoi(pid)
-				if err != nil {
-					return 0, fmt.Errorf("failed to convert PID to integer: %w", err)
+		fields := strings.Fields(line)
+		if len(fields) < 3 {
+			continue
+		}
+
+		pidStr := fields[2]
+		if pidStr == "??" {
+			continue
+		}
+
+		pidInt, err := strconv.Atoi(pidStr)
+		if err != nil {
+			continue
+		}
+
+		if pidInt == ownPID {
+			continue
+		}
+
+		if len(fields) >= 6 {
+			localAddr := fields[5]
+			if idx := strings.LastIndex(localAddr, ":"); idx >= 0 {
+				if localAddr[idx+1:] != strconv.Itoa(port) {
+					continue
 				}
-
-				return pidInt, nil
 			}
 		}
+
+		return pidInt, nil
 	}
 
 	return 0, fmt.Errorf("no process found using %s port %d", proto, port)

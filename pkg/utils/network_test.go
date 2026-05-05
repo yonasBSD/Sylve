@@ -250,7 +250,7 @@ func TestGetPortUserPID_ParsePaths(t *testing.T) {
 		defer func() { execCommand = original }()
 
 		execCommand = func(command string, args ...string) *exec.Cmd {
-			return exec.Command("sh", "-c", "printf 'root sockstat 4321 x x :8180\\n'")
+			return exec.Command("sh", "-c", "printf 'root bhyve 4321 9 tcp4 127.0.0.1:8180 *:*\\n'")
 		}
 
 		pid, err := GetPortUserPID("tcp", 8180)
@@ -262,17 +262,51 @@ func TestGetPortUserPID_ParsePaths(t *testing.T) {
 		}
 	})
 
-	t.Run("pid parse failure", func(t *testing.T) {
+	t.Run("non-numeric PID skipped", func(t *testing.T) {
 		original := execCommand
 		defer func() { execCommand = original }()
 
 		execCommand = func(command string, args ...string) *exec.Cmd {
-			return exec.Command("sh", "-c", "printf 'root sockstat not-a-pid x x :8180\\n'")
+			return exec.Command("sh", "-c", "printf 'root bhyve not-a-pid 9 tcp4 127.0.0.1:8180 *:*\\n'")
 		}
 
 		_, err := GetPortUserPID("tcp", 8180)
-		if err == nil || !strings.Contains(err.Error(), "failed to convert PID") {
-			t.Fatalf("expected PID parse error, got: %v", err)
+		if err == nil || !strings.Contains(err.Error(), "no process found") {
+			t.Fatalf("expected no process found error, got: %v", err)
+		}
+	})
+
+	t.Run("question-mark PID skipped", func(t *testing.T) {
+		original := execCommand
+		defer func() { execCommand = original }()
+
+		execCommand = func(command string, args ...string) *exec.Cmd {
+			return exec.Command("sh", "-c", "printf '?? ?? ?? ?? tcp4 10.1.0.1:8180 10.1.0.87:31773\\nroot bhyve 16018 9 tcp4 127.0.0.1:8180 *:*\\n'")
+		}
+
+		pid, err := GetPortUserPID("tcp", 8180)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if pid != 16018 {
+			t.Fatalf("pid = %d, want 16018", pid)
+		}
+	})
+
+	t.Run("foreign address port ignored", func(t *testing.T) {
+		original := execCommand
+		defer func() { execCommand = original }()
+
+		execCommand = func(command string, args ...string) *exec.Cmd {
+			return exec.Command("sh", "-c", "printf 'root sylve 99999 34 tcp4 127.0.0.1:20697 127.0.0.1:8180\\nroot bhyve 16018 9 tcp4 127.0.0.1:8180 *:*\\n'")
+		}
+
+		pid, err := GetPortUserPID("tcp", 8180)
+		if err != nil {
+			t.Fatalf("unexpected error: %v", err)
+		}
+		if pid != 16018 {
+			t.Fatalf("pid = %d, want 16018 (bhyve), got sylve's PID or other", pid)
 		}
 	})
 
@@ -281,7 +315,7 @@ func TestGetPortUserPID_ParsePaths(t *testing.T) {
 		defer func() { execCommand = original }()
 
 		execCommand = func(command string, args ...string) *exec.Cmd {
-			return exec.Command("sh", "-c", "printf 'root sockstat 1234 x x :9999\\n'")
+			return exec.Command("sh", "-c", "printf 'root bhyve 1234 9 tcp4 127.0.0.1:9999 *:*\\n'")
 		}
 
 		_, err := GetPortUserPID("tcp", 8180)
